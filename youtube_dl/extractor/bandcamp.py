@@ -22,6 +22,7 @@ from ..utils import (
     unified_strdate,
     unified_timestamp,
     url_or_none,
+    RegexNotFoundError,
 )
 
 
@@ -220,7 +221,7 @@ class BandcampIE(InfoExtractor):
 
 class BandcampAlbumIE(InfoExtractor):
     IE_NAME = 'Bandcamp:album'
-    _VALID_URL = r'https?://(?:(?P<subdomain>[^.]+)\.)?bandcamp\.com(?:/album/(?P<album_id>[^/?#&]+))?'
+    _VALID_URL = r'https?://(?:(?P<subdomain>[^.]+)\.)?bandcamp\.com/album/(?P<album_id>[^/?#&]+)'
 
     _TESTS = [{
         'url': 'http://blazo.bandcamp.com/album/jazz-format-mixtape-vol-1',
@@ -259,14 +260,6 @@ class BandcampAlbumIE(InfoExtractor):
             'id': 'hierophany-of-the-open-grave',
         },
         'playlist_mincount': 9,
-    }, {
-        'url': 'http://dotscale.bandcamp.com',
-        'info_dict': {
-            'title': 'Loom',
-            'id': 'dotscale',
-            'uploader_id': 'dotscale',
-        },
-        'playlist_mincount': 7,
     }, {
         # with escaped quote in title
         'url': 'https://jstrecords.bandcamp.com/album/entropy-ep',
@@ -414,4 +407,56 @@ class BandcampWeeklyIE(InfoExtractor):
             'episode_number': episode_number,
             'episode_id': compat_str(video_id),
             'formats': formats
+        }
+
+
+class BandcampUserIE(InfoExtractor):
+    IE_NAME = 'Bandcamp:user'
+    _VALID_URL = r'https?://(?:(?P<id>[^.]+)\.)?bandcamp\.com/?'
+
+    _TESTS = [{
+        'url': 'https://adrianvonziegler.bandcamp.com',
+        'info_dict': {
+            'id': 'adrianvonziegler',
+            'title': 'Albums of adrianvonziegler',
+        },
+        'playlist_mincount': 20,
+    }, {
+        'url': 'http://dotscale.bandcamp.com',
+        'info_dict': {
+            'id': 'dotscale',
+            'title': 'Albums of dotscale',
+        },
+        'playlist_count': 1,
+    }]
+
+    @classmethod
+    def suitable(cls, url):
+        return (False
+                if BandcampAlbumIE.suitable(url) or BandcampIE.suitable(url) or
+                BandcampWeeklyIE.suitable(url)
+                else super(BandcampUserIE, cls).suitable(url))
+
+    def _real_extract(self, url):
+        uploader = self._match_id(url)
+
+        webpage = self._download_webpage(url, uploader)
+
+        album_elements = re.findall(r'<a href="/(album/.[^"]+)">', webpage)
+
+        entries = [
+            self.url_result(
+                compat_urlparse.urljoin(url, album_id),
+                ie=BandcampAlbumIE.ie_key(),
+                video_id='%s-%s' % (uploader, album_id),
+                video_title=album_id,
+            )
+            for album_id in album_elements
+        ]
+
+        return {
+            '_type': 'playlist',
+            'id': uploader,
+            'title': 'Albums of %s' % (uploader),
+            'entries': entries,
         }
