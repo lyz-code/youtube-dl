@@ -30,6 +30,8 @@ from .adobetv import (
 from .adultswim import AdultSwimIE
 from .aenetworks import (
     AENetworksIE,
+    AENetworksCollectionIE,
+    AENetworksShowIE,
     HistoryTopicIE,
 )
 from .afreecatv import AfreecaTVIE
@@ -93,10 +95,6 @@ from .bbc import (
     BBCCoUkIPlayerPlaylistIE,
     BBCCoUkPlaylistIE,
     BBCIE,
-)
-from .beampro import (
-    BeamProLiveIE,
-    BeamProVodIE,
 )
 from .beeg import BeegIE
 from .behindkink import BehindKinkIE
@@ -334,7 +332,6 @@ from .espn import (
 )
 from .esri import EsriVideoIE
 from .europa import EuropaIE
-from .everyonesmixtape import EveryonesMixtapeIE
 from .expotv import ExpoTVIE
 from .expressen import ExpressenIE
 from .extremetube import ExtremeTubeIE
@@ -508,7 +505,6 @@ from .joj import JojIE
 from .jwplatform import JWPlatformIE
 from .kakao import KakaoIE
 from .kaltura import KalturaIE
-from .kanalplay import KanalPlayIE
 from .kankan import KankanIE
 from .karaoketv import KaraoketvIE
 from .karrierevideos import KarriereVideosIE
@@ -537,7 +533,10 @@ from .laola1tv import (
     EHFTVIE,
     ITTFIE,
 )
-from .lbry import LBRYIE
+from .lbry import (
+    LBRYIE,
+    LBRYChannelIE,
+)
 from .lci import LCIIE
 from .lcp import (
     LcpPlayIE,
@@ -683,7 +682,14 @@ from .nationalgeographic import (
     NationalGeographicTVIE,
 )
 from .naver import NaverIE
-from .nba import NBAIE
+from .nba import (
+    NBAWatchEmbedIE,
+    NBAWatchIE,
+    NBAWatchCollectionIE,
+    NBAEmbedIE,
+    NBAIE,
+    NBAChannelIE,
+)
 from .nbc import (
     CSNNEIE,
     NBCIE,
@@ -728,8 +734,14 @@ from .nexx import (
     NexxIE,
     NexxEmbedIE,
 )
-from .nfl import NFLIE
-from .nhk import NhkVodIE
+from .nfl import (
+    NFLIE,
+    NFLArticleIE,
+)
+from .nhk import (
+    NhkVodIE,
+    NhkVodProgramIE,
+)
 from .nhl import NHLIE
 from .nick import (
     NickIE,
@@ -745,7 +757,6 @@ from .ninenow import NineNowIE
 from .nintendo import NintendoIE
 from .njpwworld import NJPWWorldIE
 from .nobelprize import NobelPrizeIE
-from .noco import NocoIE
 from .nonktube import NonkTubeIE
 from .noovo import NoovoIE
 from .normalboots import NormalbootsIE
@@ -1045,12 +1056,6 @@ from .sky import (
 from .slideshare import SlideshareIE
 from .slideslive import SlidesLiveIE
 from .slutload import SlutloadIE
-from .smotri import (
-    SmotriIE,
-    SmotriCommunityIE,
-    SmotriUserIE,
-    SmotriBroadcastIE,
-)
 from .snotr import SnotrIE
 from .sohu import SohuIE
 from .sonyliv import SonyLIVIE
@@ -1128,7 +1133,6 @@ from .tagesschau import (
     TagesschauIE,
 )
 from .tass import TassIE
-from .tastytrade import TastyTradeIE
 from .tbs import TBSIE
 from .tdslifeway import TDSLifewayIE
 from .teachable import (
@@ -1155,6 +1159,7 @@ from .telequebec import (
     TeleQuebecSquatIE,
     TeleQuebecEmissionIE,
     TeleQuebecLiveIE,
+    TeleQuebecVideoIE,
 )
 from .teletask import TeleTaskIE
 from .telewebion import TelewebionIE
@@ -1227,6 +1232,10 @@ from .tv2dk import (
 from .tv2hu import TV2HuIE
 from .tv4 import TV4IE
 from .tv5mondeplus import TV5MondePlusIE
+from .tv5unis import (
+    TV5UnisVideoIE,
+    TV5UnisIE,
+)
 from .tva import (
     TVAIE,
     QubIE,
@@ -1525,11 +1534,11 @@ from .youtube import (
     YoutubeSubscriptionsIE,
     YoutubeTruncatedIDIE,
     YoutubeTruncatedURLIE,
+    YoutubeYtBeIE,
     YoutubeYtUserIE,
     YoutubeWatchLaterIE,
 )
 from .zapiks import ZapiksIE
-from .zaq1 import Zaq1IE
 from .zattoo import (
     BBVTVIE,
     EinsUndEinsTVIE,
